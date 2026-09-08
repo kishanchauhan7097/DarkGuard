@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarkGuard - Shielding Your Intent, Not Just Your Network</title>
+  <meta name="description" content="Real-time defense against digital coercion, deceptive checkout traps, forced subscriptions, and social engineering dark patterns using heuristic scanning and NLP.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              bg: '#070a11',
+              card: 'rgba(15, 23, 42, 0.65)',
+              green: '#00ff87',
+              blue: '#3b82f6',
+              red: '#ef4444'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Cyber Background Grids & Animations */
+    .bg-cyber-grid {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .bg-radial-glow {
+      background: radial-gradient(circle at 50% 20%, rgba(0, 255, 135, 0.12) 0%, rgba(59, 130, 246, 0.08) 45%, transparent 70%);
+    }
+
+    .glass-panel {
+      background: rgba(13, 20, 36, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-panel-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-panel-hover:hover {
+      border-color: rgba(0, 255, 135, 0.4);
+      box-shadow: 0 0 25px rgba(0, 255, 135, 0.15), inset 0 0 15px rgba(0, 255, 135, 0.05);
+      transform: translateY(-2px);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { filter: drop-shadow(0 0 15px rgba(0, 255, 135, 0.4)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.6)); transform: scale(1.02); }
+    }
+    .animate-pulse-glow { animation: pulseGlow 4s infinite ease-in-out; }
+
+    @keyframes rotateOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-rotate-orbit { animation: rotateOrbit 20s linear infinite; }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .animate-float { animation: floatSlow 5s ease-in-out infinite; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #070a11; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00ff87; }
+  </style>
+</head>
+<body class="bg-[#070a11] text-slate-100 font-sans antialiased selection:bg-[#00ff87]/30 selection:text-[#00ff87] overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5 bg-[#070a11]/85 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between">
+        
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="relative w-10 h-10 rounded-xl bg-slate-900 border border-[#00ff87]/40 flex items-center justify-center shadow-lg shadow-[#00ff87]/10 group-hover:border-[#00ff87] transition-all">
+            <i data-lucide="shield" class="w-5 h-5 text-[#00ff87]"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
+              Dark<span class="text-[#00ff87]">Guard</span>
+              <span class="inline-block w-2 h-2 rounded-full bg-[#00ff87] animate-ping"></span>
+            </span>
+            <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase -mt-1">NLP Anti-Coercion</span>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1.5 rounded-full border border-slate-800/80 backdrop-blur-md text-xs font-medium text-slate-300">
+          <a href="#overview" class="px-4 py-1.5 hover:text-[#00ff87] transition-colors rounded-full hover:bg-slate-800/50">Overview</a>
+          <a href="#threats" class="px-4 py-1.5 hover:text-[#00ff87] transition-colors rounded-full hover:bg-slate-800/50">Threat Matrix</a>
+          <a href="#sandbox" class="px-4 py-1.5 hover:text-[#00ff87] transition-colors rounded-full hover:bg-slate-800/50">Neutralizer</a>
+          <a href="#live-demo" class="px-4 py-1.5 text-[#00ff87] flex items-center gap-1.5 rounded-full hover:bg-slate-800/50">
+            <span class="w-2 h-2 rounded-full bg-[#00ff87] animate-ping"></span> Live Scanner
+          </a>
+          <a href="#architecture" class="px-4 py-1.5 hover:text-[#00ff87] transition-colors rounded-full hover:bg-slate-800/50">Architecture</a>
+          <a href="#team" class="px-4 py-1.5 hover:text-[#00ff87] transition-colors rounded-full hover:bg-slate-800/50">Team Resist</a>
+        </nav>
+
+        <!-- Actions -->
+        <div class="hidden lg:flex items-center gap-3">
+          <button onclick="toggleModal('demo-modal', true)" class="flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-800 border border-slate-800 rounded-lg transition-all">
+            <i data-lucide="play" class="w-3.5 h-3.5 text-blue-400"></i> Watch Demo
+          </button>
+          <button onclick="toggleModal('install-modal', true)" class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-950 bg-[#00ff87] hover:bg-[#00e57a] rounded-lg transition-all shadow-lg shadow-[#00ff87]/20">
+            <i data-lucide="download" class="w-4 h-4"></i> Add to Browser <span class="bg-slate-950/15 px-1.5 py-0.5 rounded text-[10px] font-mono">v1.2</span>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-slate-900 text-slate-300 border border-slate-800">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pt-4 space-y-3">
+        <a href="#overview" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Overview</a>
+        <a href="#threats" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Threat Matrix</a>
+        <a href="#sandbox" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Neutralizer</a>
+        <a href="#live-demo" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-[#00ff87] bg-slate-900">Live Scanner</a>
+        <a href="#architecture" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Architecture</a>
+        <a href="#team" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-900">Team Resist</a>
+        <div class="pt-2 flex flex-col gap-2">
+          <button onclick="toggleModal('install-modal', true)" class="w-full py-2.5 rounded-lg bg-[#00ff87] text-slate-950 font-bold text-sm">Add to Browser (Free)</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. HERO SECTION -->
+  <section id="overview" class="relative pt-36 pb-24 overflow-hidden bg-cyber-grid">
+    <canvas id="hero-canvas" class="absolute inset-0 pointer-events-none opacity-60 z-0"></canvas>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-radial-glow pointer-events-none blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column -->
+        <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-[#00ff87]/30 text-xs font-mono text-[#00ff87] shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-[#00ff87] animate-pulse"></span>
+            <span>Manifest V3 Next-Gen Security</span>
+            <span class="text-slate-500">|</span>
+            <span class="text-slate-300 font-sans">Powered by HuggingFace NLP</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display tracking-tight text-white leading-[1.1]">
+            Shielding Your Intent, <br class="hidden sm:inline" />
+            <span class="bg-gradient-to-r from-[#00ff87] via-blue-400 to-blue-600 bg-clip-text text-transparent">
+              Not Just Your Network.
+            </span>
+          </h1>
+
+          <p class="text-lg sm:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            Real-time defense against digital coercion, manipulative checkout traps, forced subscriptions, and social engineering dark patterns in your browser.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <button onclick="toggleModal('install-modal', true)" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#00ff87] hover:bg-[#00e57a] text-slate-950 font-bold text-base flex items-center justify-center gap-3 transition-all shadow-xl shadow-[#00ff87]/25">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              <span>Add to Browser (It's Free)</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="toggleModal('demo-modal', true)" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-base flex items-center justify-center gap-3 transition-all">
+              <i data-lucide="play" class="w-4 h-4 text-blue-400"></i>
+              <span>Watch Live Demo</span>
+            </button>
+          </div>
+
+          <!-- Live Stats -->
+          <div className="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
+            <div class="text-center lg:text-left">
+              <div class="text-2xl font-bold font-mono text-white flex items-center justify-center lg:justify-start gap-1">
+                <span id="blocked-count">148,524</span><span class="text-[#00ff87] text-xs">+</span>
+              </div>
+              <div class="text-xs text-slate-400">Dark Patterns Blocked</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="text-2xl font-bold font-mono text-white">&lt; 15ms</div>
+              <div class="text-xs text-slate-400">DOM Analysis Latency</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="text-2xl font-bold font-mono text-[#00ff87]">99.4%</div>
+              <div class="text-xs text-slate-400">NLP Accuracy Rate</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: 3D Shield -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+          <div class="relative w-full max-w-md p-6 glass-panel rounded-2xl border border-slate-700/80 shadow-2xl space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                <span class="ml-2 font-mono text-xs text-slate-400">DarkGuard.ext v1.2</span>
+              </div>
+              <span id="shield-status-badge" class="px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40">
+                SHIELD: ACTIVE
+              </span>
+            </div>
+
+            <!-- Central Orbit Visualizer -->
+            <div class="relative h-64 flex items-center justify-center">
+              <div class="absolute w-56 h-56 rounded-full border border-dashed border-[#00ff87]/40 animate-rotate-orbit"></div>
+              <div class="absolute w-44 h-44 rounded-full border border-blue-500/40 animate-pulse"></div>
+              <div class="relative z-10 w-28 h-28 rounded-2xl bg-slate-900 border-2 border-[#00ff87] shadow-[0_0_50px_rgba(0,255,135,0.35)] flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-14 h-14 text-[#00ff87] animate-pulse-glow"></i>
+              </div>
+
+              <div class="absolute top-2 left-0 glass-panel px-3 py-1.5 rounded-lg text-[11px] font-mono text-slate-300 flex items-center gap-1.5 animate-float">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-[#00ff87]"></i> Sneak-Basket Blocked
+              </div>
+              <div class="absolute bottom-2 right-0 glass-panel px-3 py-1.5 rounded-lg text-[11px] font-mono text-slate-300 flex items-center gap-1.5 animate-float" style="animation-delay: 2s;">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-400"></i> Fake Scarcity Defused
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 space-y-2">
+              <div class="flex items-center justify-between text-xs font-mono">
+                <span class="text-slate-400">Heuristic Engine:</span>
+                <span class="text-[#00ff87] flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#00ff87] animate-ping"></span> Scanning DOM
+                </span>
+              </div>
+              <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="h-full w-full bg-gradient-to-r from-[#00ff87] to-blue-500 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. THE THREAT LANDSCAPE -->
+  <section id="threats" class="py-24 relative bg-[#070a11] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-400">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+          <span>The Threat Landscape</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-white">
+          Digital Coercion is Costing You <br class="hidden sm:inline" />
+          <span class="text-red-400">Money, Privacy, & Autonomy.</span>
+        </h2>
+        <p class="text-slate-400 text-base sm:text-lg">
+          Dark Patterns manipulate psychological vulnerabilities to trick users into spending extra money or surrendering data.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
+        <!-- Threat Card 1 -->
+        <div class="p-6 glass-panel rounded-2xl border border-slate-800 hover:border-red-500/40 transition-all space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400">
+              <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-red-950/60 border border-red-800/50 text-[10px] font-mono text-red-400 font-bold">CRITICAL SEVERITY</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Financial Drain</h3>
+          <p class="text-xs font-mono text-slate-400">Sneak-into-Basket & Hidden Charges</p>
+          <p class="text-sm text-slate-300">Pre-checks optional protection plans, VIP membership add-ons, or express processing fees during cart checkout.</p>
+          <div class="bg-slate-950 p-2.5 rounded-lg font-mono text-[11px] text-red-300 overflow-x-auto">
+            <code>&lt;input type="checkbox" checked hidden /&gt;</code>
+          </div>
+        </div>
+
+        <!-- Threat Card 2 -->
+        <div class="p-6 glass-panel rounded-2xl border border-slate-800 hover:border-red-500/40 transition-all space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400">
+              <i data-lucide="user-x" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-red-950/60 border border-red-800/50 text-[10px] font-mono text-red-400 font-bold">HIGH SEVERITY</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Forced Continuity</h3>
+          <p class="text-xs font-mono text-slate-400">The Notorious "Roach Motel"</p>
+          <p class="text-sm text-slate-300">1-click signup, but cancellation requires 40 minutes, phone call verification during working hours, or hidden support tickets.</p>
+          <div class="bg-slate-950 p-2.5 rounded-lg font-mono text-[11px] text-red-300 overflow-x-auto">
+            <code>href="tel:1-800-CANCEL-MON-FRI"</code>
+          </div>
+        </div>
+
+        <!-- Threat Card 3 -->
+        <div class="p-6 glass-panel rounded-2xl border border-slate-800 hover:border-red-500/40 transition-all space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-amber-950/60 border border-amber-800/50 text-[10px] font-mono text-amber-400 font-bold">MODERATE SEVERITY</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Artificial Urgency</h3>
+          <p class="text-xs font-mono text-slate-400">Fake Countdown Timers & Stock Alerts</p>
+          <p class="text-sm text-slate-300">Dynamic timers that reset on refresh and fabricated stock counters driving panic impulse buying.</p>
+          <div class="bg-slate-950 p-2.5 rounded-lg font-mono text-[11px] text-red-300 overflow-x-auto">
+            <code>setInterval(() =&gt; timer.reset(), 900000)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. NEUTRALIZER SANDBOX -->
+  <section id="sandbox" class="py-24 relative bg-[#0a0e17] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00ff87]/10 border border-[#00ff87]/30 text-xs font-mono text-[#00ff87]">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span>Interactive Visual Sandbox</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-white">
+          See DarkGuard in Action: <br />
+          <span class="text-[#00ff87]">Before vs. After Neutralization</span>
+        </h2>
+      </div>
+
+      <!-- Controls -->
+      <div class="mt-10 max-w-4xl mx-auto glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2 bg-slate-900 p-1.5 rounded-xl text-xs">
+          <button onclick="setSandboxScenario('checkout')" id="tab-checkout" class="px-3 py-1.5 rounded-lg bg-slate-800 text-[#00ff87]">1. Flight Checkout</button>
+          <button onclick="setSandboxScenario('subscription')" id="tab-subscription" class="px-3 py-1.5 rounded-lg text-slate-400">2. Roach Motel</button>
+          <button onclick="setSandboxScenario('confirmshaming')" id="tab-confirmshaming" class="px-3 py-1.5 rounded-lg text-slate-400">3. Confirmshaming</button>
+        </div>
+
+        <div class="flex items-center gap-3 bg-slate-900 px-4 py-2 rounded-xl">
+          <span id="darkguard-toggle-label" class="text-xs font-mono font-bold text-[#00ff87]">DarkGuard ON</span>
+          <button onclick="toggleDarkGuardSandbox()" class="relative focus:outline-none">
+            <i id="toggle-icon" data-lucide="toggle-right" class="w-9 h-9 text-[#00ff87]"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Browser Preview Window -->
+      <div class="mt-8 max-w-4xl mx-auto glass-panel rounded-2xl border border-slate-700/80 shadow-2xl overflow-hidden">
+        <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+          </div>
+          <div id="sandbox-url" class="bg-slate-950 px-4 py-1 rounded-lg text-xs font-mono text-slate-300 w-full max-w-md text-center">
+            https://scam-flight-deals.com/checkout
+          </div>
+          <span id="sandbox-status-tag" class="px-2.5 py-1 rounded text-[11px] font-mono font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40">
+            UI Neutralized
+          </span>
+        </div>
+
+        <!-- Dynamic Sandbox Container -->
+        <div id="sandbox-content" class="p-8 bg-[#0a0f1d] min-h-[360px] flex items-center justify-center">
+          <!-- Default Render via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. LIVE SCANNER DEMO -->
+  <section id="live-demo" class="py-24 relative bg-[#070a11] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-mono text-blue-400">
+          <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+          <span>Live Web Scanner</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-white">
+          Test Any Website for <span class="text-[#00ff87]">Dark Patterns Live</span>
+        </h2>
+      </div>
+
+      <div class="mt-10 max-w-4xl mx-auto space-y-4">
+        <div class="glass-panel p-2 rounded-2xl border border-slate-700/80 flex items-center gap-3">
+          <div class="pl-3 text-slate-400"><i data-lucide="search" class="w-5 h-5"></i></div>
+          <input type="text" id="scanner-url-input" value="https://shop-scam-deals.com/checkout" class="w-full bg-transparent text-white font-mono text-sm focus:outline-none">
+          <button onclick="runLiveScan()" class="px-6 py-3 rounded-xl bg-[#00ff87] hover:bg-[#00e57a] text-slate-950 font-bold text-sm flex items-center gap-2 whitespace-nowrap">
+            <i data-lucide="zap" class="w-4 h-4"></i> Scan Website
+          </button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 justify-center text-xs text-slate-400">
+          <span>Try Presets:</span>
+          <button onclick="selectPreset('https://shop-scam-deals.com/checkout')" class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 hover:text-[#00ff87]">Scam E-Commerce</button>
+          <button onclick="selectPreset('https://booking-trap-hotel.net/reserve')" class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 hover:text-[#00ff87]">Hotel Booking Urgency</button>
+          <button onclick="selectPreset('https://streaming-media.io/unsubscribe')" class="px-3 py-1 rounded-full bg-slate-900 border border-slate-800 hover:text-[#00ff87]">Roach Motel Unsubscribe</button>
+        </div>
+      </div>
+
+      <!-- Scan Results Dashboard -->
+      <div id="scanner-results" class="mt-8 max-w-4xl mx-auto glass-panel rounded-2xl border border-slate-800 p-8 space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pb-6 border-b border-slate-800">
+          <div class="md:col-span-6 flex items-center gap-5">
+            <div class="w-20 h-20 rounded-full border-4 border-red-500 bg-slate-950 flex flex-col items-center justify-center font-mono">
+              <span id="score-val" class="text-2xl font-bold text-white">38</span>
+              <span class="text-[9px] text-slate-400">SCORE</span>
+            </div>
+            <div>
+              <span id="scan-status-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold text-red-400 border border-red-500/40 bg-red-500/10">
+                DANGER STATE
+              </span>
+              <h3 id="scan-domain-title" class="text-lg font-bold text-white mt-1">shop-scam-deals.com</h3>
+              <p id="scan-threat-summary" class="text-xs text-slate-400">3 manipulative threat vectors detected.</p>
+            </div>
+          </div>
+          <div class="md:col-span-6 flex justify-end">
+            <button onclick="neutralizeScannerThreats()" id="btn-neutralize" class="px-6 py-3.5 rounded-xl bg-[#00ff87] text-slate-950 font-bold text-sm flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Neutralize All Threats
+            </button>
+          </div>
+        </div>
+
+        <div id="threat-list-container" class="space-y-4">
+          <!-- Dynamic Threat Cards -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ARCHITECTURE & TECH STACK -->
+  <section id="architecture" class="py-24 relative bg-[#0a0e17] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-mono text-blue-400">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          <span>Architecture & Pipeline</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-white">
+          How DarkGuard Works: <span class="text-[#00ff87]">DOM to NLP Injection</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+          <span class="font-mono text-2xl font-bold text-[#00ff87]">01</span>
+          <h3 class="text-lg font-bold text-white">DOM Extraction</h3>
+          <p class="text-xs text-slate-400">Manifest V3 Content Script monitors DOM MutationObserver events in real-time.</p>
+        </div>
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+          <span class="font-mono text-2xl font-bold text-[#00ff87]">02</span>
+          <h3 class="text-lg font-bold text-white">Heuristic Scan</h3>
+          <p class="text-xs text-slate-400">Local sub-5ms regex checks unmask hidden inputs & reset timers.</p>
+        </div>
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+          <span class="font-mono text-2xl font-bold text-[#00ff87]">03</span>
+          <h3 class="text-lg font-bold text-white">Cloud NLP Analysis</h3>
+          <p class="text-xs text-slate-400">FastAPI microservice runs DeBERTa Transformer intent classification.</p>
+        </div>
+        <div class="glass-panel p-6 rounded-2xl border border-slate-800 space-y-3">
+          <span class="font-mono text-2xl font-bold text-[#00ff87]">04</span>
+          <h3 class="text-lg font-bold text-white">UI Injection</h3>
+          <p class="text-xs text-slate-400">Shadow DOM sanitizer overrides CSS styles and strips manipulative text.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TEAM RESIST & INSTITUTIONAL PRIDE -->
+  <section id="team" class="py-24 relative bg-[#070a11] border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00ff87]/10 border border-[#00ff87]/30 text-xs font-mono text-[#00ff87]">
+          <i data-lucide="users" class="w-3.5 h-3.5"></i>
+          <span>Team Resist</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-display text-white">
+          Meet the Minds Behind <span class="text-[#00ff87]">DarkGuard</span>
+        </h2>
+
+        <!-- Institutional Pride Badge -->
+        <div class="pt-2">
+          <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-700 shadow-lg">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-[#00ff87]"></i>
+            <div class="text-left">
+              <span class="text-[10px] font-mono text-slate-400 block">Proudly Representing</span>
+              <span class="text-sm font-bold text-white font-display">Buddha Institute of Technology</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+        <!-- Vinay -->
+        <div class="glass-panel p-8 rounded-2xl border border-slate-800 space-y-5">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00ff87]/20 to-blue-500/20 border-2 border-[#00ff87] flex items-center justify-center font-mono text-xl font-bold text-[#00ff87]">
+            VS
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Vinay Kumar Singh</h3>
+            <div class="text-xs font-mono text-[#00ff87]">Lead NLP Architect & Extension Core</div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">Specializing in transformer quantization and fine-tuning DeBERTa models for real-time web context classification.</p>
+        </div>
+
+        <!-- Piyush -->
+        <div class="glass-panel p-8 rounded-2xl border border-slate-800 space-y-5">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-2 border-blue-400 flex items-center justify-center font-mono text-xl font-bold text-blue-400">
+            PR
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Piyush Raj</h3>
+            <div class="text-xs font-mono text-blue-400">Full-Stack Engineer & Heuristics Lead</div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">Focused on high-performance FastAPI microservices and sub-15ms DOM mutation parsing engine.</p>
+        </div>
+
+        <!-- Kishan -->
+        <div class="glass-panel p-8 rounded-2xl border border-slate-800 space-y-5">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-2 border-purple-400 flex items-center justify-center font-mono text-xl font-bold text-purple-400">
+            KC
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Kishan Chauhan</h3>
+            <div class="text-xs font-mono text-purple-400">UI/UX Designer & Frontend Specialist</div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">Crafting non-intrusive extension overlays, dark-mode cybersecurity aesthetic systems, and glassmorphic UX.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#05070d] border-t border-slate-800 pt-16 pb-12 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <i data-lucide="shield" class="w-6 h-6 text-[#00ff87]"></i>
+          <span class="font-display text-lg font-bold text-white">DarkGuard Security</span>
+        </div>
+        <div class="flex items-center gap-4 text-slate-300">
+          <a href="https://github.com" target="_blank" class="hover:text-[#00ff87]">GitHub</a>
+          <button onclick="toggleModal('figma-modal', true)" class="hover:text-[#00ff87]">Figma Prototype</button>
+          <button onclick="toggleModal('demo-modal', true)" class="hover:text-[#00ff87]">Demo Video</button>
+        </div>
+      </div>
+      <div class="pt-6 border-t border-slate-900 text-center font-mono text-slate-500">
+        &copy; 2026 DarkGuard. Developed with passion by Team Resist at Buddha Institute of Technology.
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div id="install-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="relative w-full max-w-md glass-panel p-6 rounded-2xl border border-slate-700 space-y-4">
+      <button onclick="toggleModal('install-modal', false)" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x"></i></button>
+      <h3 class="text-xl font-bold text-white font-display text-center">Install DarkGuard Extension</h3>
+      <p class="text-xs text-slate-300 text-center">Pre-compiled Manifest V3 Extension Package</p>
+      <button onclick="downloadBuildZip()" class="w-full py-3 rounded-xl bg-[#00ff87] text-slate-950 font-bold text-sm">Download Extension (.zip)</button>
+    </div>
+  </div>
+
+  <div id="demo-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="relative w-full max-w-2xl glass-panel p-6 rounded-2xl border border-slate-700 space-y-4">
+      <button onclick="toggleModal('demo-modal', false)" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x"></i></button>
+      <h3 class="text-xl font-bold text-white font-display">Product Walkthrough Video</h3>
+      <div class="aspect-video bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-center text-center p-6 space-y-2">
+        <div>
+          <i data-lucide="shield-check" class="w-12 h-12 text-[#00ff87] mx-auto animate-pulse"></i>
+          <p class="text-sm font-bold text-white mt-2">Live Demonstration Running</p>
+          <p class="text-xs text-slate-400">Interception of Sneak-into-Basket fees in Chrome Browser</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="figma-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="relative w-full max-w-md glass-panel p-6 rounded-2xl border border-slate-700 space-y-4">
+      <button onclick="toggleModal('figma-modal', false)" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x"></i></button>
+      <h3 class="text-xl font-bold text-white font-display text-center">Figma Design System</h3>
+      <p class="text-xs text-slate-300 text-center">UI Components & Wireframes</p>
+      <a href="https://figma.com" target="_blank" class="block text-center w-full py-3 rounded-xl bg-purple-600 text-white font-bold text-sm">Open Figma Prototype</a>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE SCRIPTS -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Hero Live Counter
+    let count = 148524;
+    setInterval(() => {
+      count += Math.floor(Math.random() * 3) + 1;
+      document.getElementById('blocked-count').innerText = count.toLocaleString();
+    }, 2500);
+
+    // Hero Canvas Effect
+    const canvas = document.getElementById('hero-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const particles = Array.from({ length: 40 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4
+      }));
+      function renderCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#00ff87';
+          ctx.globalAlpha = 0.4;
+          ctx.fill();
+        });
+        requestAnimationFrame(renderCanvas);
+      }
+      renderCanvas();
+    }
+
+    // Modal Manager
+    function toggleModal(id, show) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.toggle('hidden', !show);
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function downloadBuildZip() {
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      alert("Downloading DarkGuard pre-compiled build zip file!");
+    }
+
+    // Neutralizer Sandbox Logic
+    let currentScenario = 'checkout';
+    let darkGuardActive = true;
+
+    function toggleDarkGuardSandbox() {
+      darkGuardActive = !darkGuardActive;
+      const label = document.getElementById('darkguard-toggle-label');
+      const icon = document.getElementById('toggle-icon');
+      const tag = document.getElementById('sandbox-status-tag');
+      
+      if (darkGuardActive) {
+        label.innerText = 'DarkGuard ON';
+        label.className = 'text-xs font-mono font-bold text-[#00ff87]';
+        icon.setAttribute('data-lucide', 'toggle-right');
+        icon.className = 'w-9 h-9 text-[#00ff87]';
+        tag.innerText = 'UI Neutralized';
+        tag.className = 'px-2.5 py-1 rounded text-[11px] font-mono font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40';
+      } else {
+        label.innerText = 'DarkGuard OFF';
+        label.className = 'text-xs font-mono font-bold text-red-400';
+        icon.setAttribute('data-lucide', 'toggle-left');
+        icon.className = 'w-9 h-9 text-slate-600';
+        tag.innerText = 'Raw Deceptive UI';
+        tag.className = 'px-2.5 py-1 rounded text-[11px] font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse';
+      }
+      lucide.createIcons();
+      renderSandbox();
+    }
+
+    function setSandboxScenario(scenario) {
+      currentScenario = scenario;
+      ['checkout', 'subscription', 'confirmshaming'].forEach(s => {
+        const btn = document.getElementById(`tab-${s}`);
+        if (btn) {
+          btn.className = s === scenario 
+            ? 'px-3 py-1.5 rounded-lg bg-slate-800 text-[#00ff87]' 
+            : 'px-3 py-1.5 rounded-lg text-slate-400';
+        }
+      });
+      renderSandbox();
+    }
+
+    function renderSandbox() {
+      const container = document.getElementById('sandbox-content');
+      const urlBox = document.getElementById('sandbox-url');
+
+      if (currentScenario === 'checkout') {
+        urlBox.innerText = 'https://scam-flight-deals.com/checkout';
+        container.innerHTML = `
+          <div class="w-full max-w-lg bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4">
+            <div class="${darkGuardActive ? 'bg-[#00ff87]/10 text-[#00ff87] border-[#00ff87]/30' : 'bg-red-500/10 text-red-400 border-red-500/30'} p-2.5 rounded-lg text-xs font-mono border">
+              ${darkGuardActive ? '✓ DarkGuard neutralized fake stock countdown.' : '⚠️ ONLY 1 SEAT LEFT! OFFER EXPIRES IN 04:59!'}
+            </div>
+            <div class="flex justify-between font-bold text-white text-base">
+              <span>Flight Ticket (NYC → LON)</span>
+              <span>$450.00</span>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-lg text-xs flex justify-between items-center border ${darkGuardActive ? 'border-[#00ff87]/40' : 'border-red-500/50'}">
+              <label class="flex items-center gap-2 text-slate-300">
+                <input type="checkbox" ${darkGuardActive ? '' : 'checked'} disabled />
+                Travel Luggage Protection Insurance
+              </label>
+              <span class="font-mono ${darkGuardActive ? 'text-[#00ff87]' : 'text-red-400'}">${darkGuardActive ? 'Unchecked' : '+$49.99'}</span>
+            </div>
+            <div class="flex justify-between font-mono font-bold text-white text-lg pt-2 border-t border-slate-800">
+              <span>Total due:</span>
+              <span>${darkGuardActive ? '$450.00' : '$499.99'}</span>
+            </div>
+            <button class="w-full py-3 rounded-xl font-bold text-sm ${darkGuardActive ? 'bg-[#00ff87] text-slate-950' : 'bg-red-500 text-white'}">
+              ${darkGuardActive ? 'Proceed to Honest Checkout ($450.00)' : 'Pay Now ($499.99)'}
+            </button>
+          </div>
+        `;
+      } else if (currentScenario === 'subscription') {
+        urlBox.innerText = 'https://gym-app.io/account/cancel';
+        container.innerHTML = `
+          <div class="w-full max-w-lg bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4">
+            <h4 class="text-lg font-bold text-white">Cancel Pro Subscription</h4>
+            ${darkGuardActive ? `
+              <div class="bg-[#00ff87]/10 border border-[#00ff87]/30 p-3 rounded-lg text-xs font-mono text-[#00ff87]">
+                DarkGuard injected direct 1-click Cancellation API endpoint.
+              </div>
+              <button class="w-full py-3 rounded-xl bg-red-500/20 text-red-400 border border-red-500/50 font-bold text-sm">
+                Cancel Subscription Instantly
+              </button>
+            ` : `
+              <div class="bg-red-500/10 border border-red-500/30 p-3 rounded-lg text-xs font-mono text-red-400">
+                Roach Motel Pattern: Online cancellation disabled. Call 1-800-555-0199 (EST hours).
+              </div>
+              <button disabled class="w-full py-3 rounded-xl bg-slate-800 text-slate-600 text-sm">
+                Cancel Online (Disabled)
+              </button>
+            `}
+          </div>
+        `;
+      } else {
+        urlBox.innerText = 'https://pdf-converter.net/offer';
+        container.innerHTML = `
+          <div class="w-full max-w-lg bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4 text-center">
+            <h4 class="text-xl font-bold text-white">Claim 50% Member Discount</h4>
+            ${darkGuardActive ? `
+              <button class="w-full py-2.5 rounded-xl bg-[#00ff87] text-slate-950 font-bold text-sm">Claim Discount</button>
+              <button class="w-full py-2 rounded-xl bg-slate-800 text-slate-300 text-xs">No thanks, close window</button>
+            ` : `
+              <button class="w-full py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm">Claim Discount</button>
+              <button class="w-full py-2 text-slate-500 text-xs underline">No thanks, I prefer paying full price and wasting money</button>
+            `}
+          </div>
+        `;
+      }
+    }
+    renderSandbox();
+
+    // Scanner Demo Logic
+    let isScannerNeutralized = false;
+
+    function selectPreset(url) {
+      document.getElementById('scanner-url-input').value = url;
+      runLiveScan();
+    }
+
+    function runLiveScan() {
+      isScannerNeutralized = false;
+      const container = document.getElementById('threat-list-container');
+      container.innerHTML = `
+        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-2">
+          <div class="flex items-center gap-2 text-red-400 font-mono font-bold">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Threat Vector 1: Sneak-into-Basket Checkbox
+          </div>
+          <p>Hidden input pre-checks $14.99 warranty without user consent.</p>
+          <div class="bg-slate-900 p-2 rounded text-red-300 font-mono text-[11px]">&lt;input type="checkbox" name="vip_fee" checked hidden /&gt;</div>
+        </div>
+        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-2">
+          <div class="flex items-center gap-2 text-amber-400 font-mono font-bold">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> Threat Vector 2: Fake Scarcity Timer
+          </div>
+          <p>JavaScript timer resets dynamically upon cookie deletion.</p>
+        </div>
+      `;
+      document.getElementById('score-val').innerText = '38';
+      document.getElementById('scan-status-badge').innerText = 'DANGER STATE';
+      document.getElementById('scan-status-badge').className = 'px-3 py-1 rounded-full text-xs font-mono font-bold text-red-400 border border-red-500/40 bg-red-500/10';
+      document.getElementById('btn-neutralize').style.display = 'flex';
+    }
+
+    function neutralizeScannerThreats() {
+      isScannerNeutralized = true;
+      confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+      document.getElementById('score-val').innerText = '95';
+      document.getElementById('scan-status-badge').innerText = 'SAFE & SANITIZED';
+      document.getElementById('scan-status-badge').className = 'px-3 py-1 rounded-full text-xs font-mono font-bold text-[#00ff87] border border-[#00ff87]/40 bg-[#00ff87]/10';
+      document.getElementById('scan-threat-summary').innerText = 'All dark pattern vectors suppressed.';
+      document.getElementById('btn-neutralize').style.display = 'none';
+      document.getElementById('threat-list-container').innerHTML = `
+        <div class="p-4 bg-[#00ff87]/10 rounded-xl border border-[#00ff87]/40 text-xs text-[#00ff87] font-mono font-bold flex items-center gap-2">
+          ✓ All manipulative DOM vectors sanitized by DarkGuard Engine.
+        </div>
+      `;
+    }
+    runLiveScan();
+  </script>
+</body>
+</html>
