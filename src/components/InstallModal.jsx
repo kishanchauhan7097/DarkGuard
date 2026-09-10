@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, ShieldCheck, Check, Terminal, ExternalLink, Sparkles } from 'lucide-react';
+import { X, Download, ShieldCheck, Check, Terminal, ExternalLink, Sparkles, Chrome } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const ChromeIcon = (props) => (
@@ -22,79 +22,81 @@ export default function InstallModal({ isOpen, onClose }) {
     confetti({
       particleCount: 100,
       spread: 80,
-      origin: { y: 0.5 }
+      origin: { y: 0.5 },
+      colors: ['#00ff87', '#00f2fe', '#3b82f6']
     });
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg glass-panel rounded-2xl border border-slate-700/80 p-6 md:p-8 space-y-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-in fade-in duration-300">
+      <div className="relative w-full max-w-lg glass-panel rounded-3xl border border-white/15 p-6 md:p-8 space-y-6 shadow-2xl shadow-black/90">
         
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 text-slate-400 hover:text-white border border-slate-800"
+          className="absolute top-5 right-5 p-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Header */}
         <div className="space-y-2 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-[#00ff87]/20 border border-[#00ff87]/50 flex items-center justify-center mx-auto text-[#00ff87]">
-            <ShieldCheck className="w-7 h-7" />
+          <div className="w-14 h-14 rounded-2xl bg-[#00ff87]/20 border border-[#00ff87]/50 flex items-center justify-center mx-auto text-[#00ff87] shadow-lg shadow-[#00ff87]/20">
+            <ShieldCheck className="w-8 h-8" />
           </div>
-          <h3 className="text-2xl font-bold font-['Space_Grotesk'] text-white">
+          <h3 className="text-2xl font-black font-['Space_Grotesk'] text-white">
             Install DarkGuard Extension
           </h3>
-          <p className="text-xs text-slate-300">
-            Free open-source protection against manipulative browser dark patterns.
+          <p className="text-xs text-slate-300 max-w-xs mx-auto">
+            Free open-source real-time protection against manipulative browser dark patterns.
           </p>
         </div>
 
         {/* Browser Selector */}
         <div className="grid grid-cols-4 gap-3 text-center">
-          <div className="p-3 rounded-xl bg-slate-900 border border-[#00ff87]/40 text-[#00ff87] font-mono text-xs space-y-1">
+          <div className="p-3.5 rounded-2xl bg-[#050b18] border border-[#00ff87]/50 text-[#00ff87] font-mono text-xs space-y-1.5 shadow-lg shadow-[#00ff87]/10">
             <ChromeIcon className="w-5 h-5 mx-auto" />
-            <span>Chrome</span>
+            <span className="font-bold block">Chrome</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs space-y-1">
-            <span className="font-bold text-blue-400 block">E</span>
+          <div className="p-3.5 rounded-2xl bg-[#050b18] border border-white/5 text-slate-400 font-mono text-xs space-y-1.5 hover:border-white/20 transition-colors">
+            <span className="font-black text-cyan-400 block text-base">B</span>
+            <span>Brave</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#050b18] border border-white/5 text-slate-400 font-mono text-xs space-y-1.5 hover:border-white/20 transition-colors">
+            <span className="font-black text-blue-400 block text-base">E</span>
             <span>Edge</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs space-y-1">
-            <span className="font-bold text-orange-400 block">F</span>
+          <div className="p-3.5 rounded-2xl bg-[#050b18] border border-white/5 text-slate-400 font-mono text-xs space-y-1.5 hover:border-white/20 transition-colors">
+            <span className="font-black text-orange-400 block text-base">F</span>
             <span>Firefox</span>
-          </div>
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs space-y-1">
-            <span className="font-bold text-[#00ff87] block">B</span>
-            <span>Brave</span>
           </div>
         </div>
 
         {/* Installation Steps */}
-        <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 font-mono text-xs text-slate-300">
-          <div className="flex items-center gap-2 text-[#00ff87]">
+        <div className="bg-[#050b18] p-5 rounded-2xl border border-white/10 space-y-2.5 font-mono text-xs text-slate-300">
+          <div className="flex items-center gap-2 text-[#00ff87] font-bold">
             <Terminal className="w-4 h-4" />
             <span>Developer Mode Quick-Load:</span>
           </div>
-          <ol className="list-decimal list-inside space-y-1 text-slate-400">
-            <li>Download the pre-compiled `DarkGuard-v1.2.zip` bundle.</li>
-            <li>Open Chrome extension settings (`chrome://extensions`).</li>
-            <li>Enable Developer Mode toggle top right.</li>
+          <ol className="list-decimal list-inside space-y-1.5 text-slate-400">
+            <li>Download the pre-compiled <code className="text-[#00ff87]">DarkGuard-v1.2.zip</code> bundle.</li>
+            <li>Open Chrome extension settings (<code className="text-cyan-400">chrome://extensions</code>).</li>
+            <li>Enable Developer Mode toggle in the top right corner.</li>
             <li>Click 'Load unpacked' and select the unzipped directory.</li>
           </ol>
         </div>
 
         {/* Download Button */}
         {downloaded ? (
-          <div className="p-4 rounded-xl bg-[#00ff87]/20 border border-[#00ff87]/50 text-[#00ff87] font-bold text-sm text-center flex items-center justify-center gap-2">
+          <div className="p-4 rounded-2xl bg-[#00ff87]/20 border border-[#00ff87]/50 text-[#00ff87] font-bold text-sm text-center flex items-center justify-center gap-2 shadow-xl shadow-[#00ff87]/20 animate-in fade-in">
             <Check className="w-5 h-5 text-[#00ff87]" />
             <span>DarkGuard Build Bundle Downloaded!</span>
           </div>
         ) : (
           <button
             onClick={handleDownload}
-            className="w-full py-3.5 rounded-xl bg-[#00ff87] hover:bg-[#00e57a] text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-xl shadow-[#00ff87]/20"
+            className="w-full py-4 rounded-2xl bg-[#00ff87] hover:bg-[#00ffa3] text-slate-950 font-black font-['Space_Grotesk'] text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-xl shadow-[#00ff87]/30 hover:scale-[1.02] active:scale-95 cursor-pointer"
           >
             <Download className="w-5 h-5" />
             <span>Download DarkGuard Extension (Zip)</span>

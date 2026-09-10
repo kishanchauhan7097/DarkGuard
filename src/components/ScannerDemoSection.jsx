@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, ShieldAlert, ShieldCheck, Cpu, Terminal, Sparkles, RefreshCw, AlertTriangle, Check, ArrowRight, Code, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ShieldAlert, ShieldCheck, Cpu, Terminal, Sparkles, RefreshCw, AlertTriangle, Check, ArrowRight, Code, Zap, Radar, Play } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ScannerDemoSection() {
@@ -15,11 +15,10 @@ export default function ScannerDemoSection() {
   const [scanResults, setScanResults] = useState(null);
   const [neutralized, setNeutralized] = useState(false);
 
-  // Database of mock analysis responses based on URL patterns
   const mockDatabase = {
     'shop-scam-deals': {
       score: 38,
-      status: 'DANGER',
+      status: 'CRITICAL DANGER',
       statusColor: 'text-red-400 border-red-500/40 bg-red-500/10',
       threatsCount: 3,
       domain: 'shop-scam-deals.com',
@@ -79,7 +78,7 @@ export default function ScannerDemoSection() {
       score: 28,
       status: 'CRITICAL DANGER',
       statusColor: 'text-red-500 border-red-600/50 bg-red-600/10',
-      threatsCount: 3,
+      threatsCount: 2,
       domain: 'streaming-media.io',
       threats: [
         {
@@ -108,99 +107,68 @@ export default function ScannerDemoSection() {
     setNeutralized(false);
     setScanResults(null);
 
-    // Step 1: DOM Parsing (800ms)
+    // Step 1: DOM Parsing
     setTimeout(() => {
       setScanStep(2);
-      // Step 2: NLP Model Inference (900ms)
+      // Step 2: NLP Model Inference
       setTimeout(() => {
         setScanStep(3);
         setIsScanning(false);
 
-        // Determine result based on input match or fallback default
         let matched = mockDatabase['shop-scam-deals'];
         if (targetUrl.includes('booking')) matched = mockDatabase['booking-trap'];
-        if (targetUrl.includes('stream')) matched = mockDatabase['streaming-media'];
-
+        else if (targetUrl.includes('streaming')) matched = mockDatabase['streaming-media'];
+        
         setScanResults(matched);
       }, 900);
     }, 800);
   };
-
-  // Run initial scan on load
-  useEffect(() => {
-    handleStartScan('https://shop-scam-deals.com/checkout');
-  }, []);
 
   const handleNeutralizeAll = () => {
     setNeutralized(true);
     confetti({
       particleCount: 80,
       spread: 70,
-      origin: { y: 0.6 }
+      origin: { y: 0.6 },
+      colors: ['#00ff87', '#00f2fe', '#3b82f6']
     });
   };
 
   return (
-    <section id="live-demo" className="py-24 relative bg-[#070a11] border-t border-slate-800">
+    <section id="live-demo" className="py-28 relative border-t border-white/5 bg-[#030712]/80">
       
+      {/* Background Glow */}
+      <div className="absolute top-1/3 left-10 w-[600px] h-[600px] bg-radial-glow-blue blur-3xl pointer-events-none opacity-35" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header */}
+        {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-mono text-blue-400">
-            <Cpu className="w-3.5 h-3.5" />
-            <span>Live Web Scanner</span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-cyan-400 shadow-lg shadow-cyan-500/10 backdrop-blur-md">
+            <Radar className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '4s' }} />
+            <span>Real-Time Security Scanner</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-['Space_Grotesk'] text-white">
-            Test Any Website for <br />
-            <span className="bg-gradient-to-r from-blue-400 via-[#00ff87] to-[#00ff87] bg-clip-text text-transparent">
-              Dark Patterns in Real-Time
+          
+          <h2 className="text-3xl sm:text-5xl font-black font-['Space_Grotesk'] text-white tracking-tight">
+            Tactical Threat Radar: <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-[#00ff87] to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(0,242,254,0.35)]">
+              Simulate Live DOM Infiltration
             </span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg">
-            Experience how DarkGuard's sub-15ms heuristic parser and HuggingFace DeBERTa model analyze web page DOM structures live.
+          
+          <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
+            Test any target URL against DarkGuard's dual-engine AST parser and HuggingFace DeBERTa NLP classifier to unmask coercive patterns.
           </p>
         </div>
 
-        {/* URL Input Bar & Presets */}
-        <div className="mt-10 max-w-4xl mx-auto space-y-3">
+        {/* Tactical Scanner Console */}
+        <div className="mt-12 max-w-4xl mx-auto glass-panel rounded-3xl border border-white/15 p-6 md:p-8 shadow-2xl space-y-6">
           
-          {/* Main Input Box */}
-          <div className="glass-panel p-2 rounded-2xl border border-slate-700/80 flex items-center gap-3 shadow-2xl">
-            <div className="pl-3 text-slate-400">
-              <Search className="w-5 h-5" />
-            </div>
-            
-            <input 
-              type="text" 
-              value={inputUrl}
-              onChange={(e) => setInputUrl(e.target.value)}
-              placeholder="Paste website URL (e.g. https://store-deals.com/checkout)..."
-              className="w-full bg-transparent text-white font-mono text-sm sm:text-base focus:outline-none placeholder:text-slate-600"
-            />
-
-            <button
-              onClick={() => handleStartScan(inputUrl)}
-              disabled={isScanning}
-              className="px-6 py-3 rounded-xl bg-[#00ff87] hover:bg-[#00e57a] text-slate-950 font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-[#00ff87]/20 disabled:opacity-50 whitespace-nowrap"
-            >
-              {isScanning ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Scanning DOM...</span>
-                </>
-              ) : (
-                <>
-                  <Zap className="w-4 h-4 fill-slate-950" />
-                  <span>Scan Website</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Quick Preset Buttons */}
-          <div className="flex flex-wrap items-center gap-2 justify-center pt-1 text-xs">
-            <span className="text-slate-500 font-mono">Try Preset Scams:</span>
+          {/* Preset Buttons */}
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="text-xs font-mono text-slate-400 mr-1 flex items-center gap-1">
+              <Sparkles className="w-3 h-3 text-cyan-400" /> Test Vectors:
+            </span>
             {presets.map((preset, idx) => (
               <button
                 key={idx}
@@ -208,165 +176,175 @@ export default function ScannerDemoSection() {
                   setInputUrl(preset.url);
                   handleStartScan(preset.url);
                 }}
-                className="px-3 py-1 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 transition-colors"
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all duration-300 ${
+                  inputUrl === preset.url
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-md'
+                    : 'bg-slate-900 text-slate-400 border border-white/5 hover:text-white'
+                }`}
               >
                 {preset.name}
               </button>
             ))}
           </div>
 
-        </div>
-
-        {/* Dynamic Scanning Status State */}
-        {isScanning && (
-          <div className="mt-8 max-w-4xl mx-auto glass-panel p-8 rounded-2xl border border-slate-800 text-center space-y-6 animate-in fade-in duration-300">
-            <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full border-2 border-blue-500/30 border-t-blue-500 animate-spin"></div>
-              <Cpu className="w-8 h-8 text-[#00ff87] animate-pulse" />
+          {/* Search Input & Action Button */}
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <div className="relative w-full">
+              <Search className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={inputUrl}
+                onChange={(e) => setInputUrl(e.target.value)}
+                placeholder="Enter URL to inspect (e.g. https://target-site.com/checkout)"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#050b18] border border-white/10 text-slate-100 placeholder-slate-500 text-sm font-mono focus:outline-none focus:border-cyan-500/70 focus:ring-2 focus:ring-cyan-500/20 shadow-inner transition-all"
+              />
             </div>
-
-            <div className="space-y-2">
-              <h4 className="text-lg font-bold text-white font-mono">
-                {scanStep === 1 && 'Phase 1: Traversing DOM Node Hierarchy...'}
-                {scanStep === 2 && 'Phase 2: HuggingFace NLP Intent Inference...'}
-              </h4>
-              <p className="text-xs text-slate-400 font-mono">
-                {scanStep === 1 && 'Extracting text nodes, hidden input attributes, and inline CSS styles.'}
-                {scanStep === 2 && 'Classifying coercion intent against DeBERTa-v3 multi-label model.'}
-              </p>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="w-full max-w-md mx-auto bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
-              <div className={`h-full bg-gradient-to-r from-blue-500 to-[#00ff87] transition-all duration-700 ${scanStep === 1 ? 'w-1/2' : 'w-full'}`}></div>
-            </div>
-          </div>
-        )}
-
-        {/* Scanning Results Dashboard */}
-        {!isScanning && scanResults && (
-          <div className="mt-8 max-w-4xl mx-auto glass-panel rounded-2xl border border-slate-800 p-6 md:p-8 space-y-8 animate-in slide-in-from-bottom-4 duration-500 shadow-2xl">
             
-            {/* Top Score Banner */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pb-6 border-b border-slate-800">
-              
-              {/* Score Gauge Left */}
-              <div className="md:col-span-5 flex items-center gap-5">
-                <div className="relative w-24 h-24 rounded-full border-4 border-slate-800 flex items-center justify-center bg-slate-950 flex-shrink-0">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-slate-800"
-                      strokeWidth="3"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <path
-                      className={neutralized ? 'text-[#00ff87]' : 'text-red-500'}
-                      strokeDasharray={`${neutralized ? 95 : scanResults.score}, 100`}
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      stroke="currentColor"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-2xl font-bold font-mono text-white">
-                      {neutralized ? '95' : scanResults.score}
-                    </span>
-                    <span className="text-[9px] font-mono text-slate-400 uppercase">Trust Score</span>
-                  </div>
-                </div>
+            <button
+              onClick={() => handleStartScan(inputUrl)}
+              disabled={isScanning}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-[#00ff87] text-slate-950 font-black font-['Space_Grotesk'] text-sm tracking-wide shrink-0 flex items-center justify-center gap-2.5 hover:opacity-90 shadow-xl shadow-cyan-500/20 transition-all active:scale-95 disabled:opacity-50"
+            >
+              {isScanning ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
+                  <span>Scanning DOM...</span>
+                </>
+              ) : (
+                <>
+                  <Zap className="w-4 h-4 text-slate-950" />
+                  <span>Run Live Scan</span>
+                </>
+              )}
+            </button>
+          </div>
 
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold border ${
-                      neutralized 
-                        ? 'text-[#00ff87] border-[#00ff87]/40 bg-[#00ff87]/10' 
-                        : scanResults.statusColor
-                    }`}>
-                      {neutralized ? 'SAFE & SANITIZED' : scanResults.status}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-white mt-1.5">{scanResults.domain}</h3>
-                  <p className="text-xs text-slate-400">
-                    {neutralized 
-                      ? 'All dark pattern vectors successfully suppressed.' 
-                      : `${scanResults.threatsCount} manipulative threat vectors detected.`}
-                  </p>
-                </div>
+          {/* Scanning Progress Pipeline */}
+          {isScanning && (
+            <div className="bg-[#050b18] p-5 rounded-2xl border border-cyan-500/30 space-y-3 animate-in fade-in duration-300">
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className="text-cyan-400 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                  {scanStep === 1 && 'Step 1/2: Extracting Dynamic DOM Mutation AST...'}
+                  {scanStep === 2 && 'Step 2/2: DeBERTa Quantized Model Inference...'}
+                </span>
+                <span className="text-slate-400">{scanStep === 1 ? '50%' : '90%'}</span>
               </div>
+              <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-cyan-400 to-[#00ff87] h-full transition-all duration-500"
+                  style={{ width: scanStep === 1 ? '50%' : '90%' }}
+                />
+              </div>
+            </div>
+          )}
 
-              {/* Action Neutralize Button Right */}
-              <div className="md:col-span-7 flex flex-col sm:flex-row items-center justify-end gap-3">
-                {neutralized ? (
-                  <div className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#00ff87]/20 border border-[#00ff87]/50 text-[#00ff87] font-bold text-sm flex items-center justify-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-[#00ff87]" />
-                    <span>Neutralization Active</span>
+          {/* Scan Results Panel */}
+          {scanResults && !isScanning && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-3 duration-500">
+              
+              {/* Radar Score & Risk Banner */}
+              <div className="p-6 rounded-2xl bg-[#050b18] border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div className="flex items-center gap-5">
+                  
+                  {/* Trust Score Gauge */}
+                  <div className="relative w-20 h-20 rounded-2xl bg-slate-900 border border-white/10 flex flex-col items-center justify-center shadow-inner">
+                    <span className="text-xs font-mono text-slate-400">Trust Score</span>
+                    <span className={`text-2xl font-black font-mono ${neutralized ? 'text-[#00ff87]' : 'text-red-400'}`}>
+                      {neutralized ? '98' : scanResults.score}
+                    </span>
+                    <span className="text-[10px] text-slate-500">/ 100</span>
                   </div>
-                ) : (
+
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <span className={`px-3 py-1 rounded-lg text-xs font-mono font-bold border ${neutralized ? 'text-[#00ff87] border-[#00ff87]/40 bg-[#00ff87]/10' : scanResults.statusColor}`}>
+                        {neutralized ? 'TRUST CERTIFIED' : scanResults.status}
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">
+                        {neutralized ? 'All threats neutralized' : `${scanResults.threatsCount} Active Dark Patterns Flagged`}
+                      </span>
+                    </div>
+                    <div className="text-sm font-semibold text-white mt-1.5 font-mono">
+                      Target Domain: <span className="text-cyan-400">{scanResults.domain}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Neutralize Action */}
+                {!neutralized ? (
                   <button
                     onClick={handleNeutralizeAll}
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#00ff87] hover:bg-[#00e57a] text-slate-950 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#00ff87]/20"
+                    className="w-full md:w-auto px-6 py-3.5 rounded-xl bg-[#00ff87] hover:bg-[#00ffa3] text-slate-950 font-black font-['Space_Grotesk'] text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#00ff87]/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
                   >
-                    <Sparkles className="w-4 h-4 fill-slate-950" />
+                    <ShieldCheck className="w-4 h-4" />
                     <span>Neutralize All Threats</span>
                   </button>
+                ) : (
+                  <div className="px-5 py-3 rounded-xl bg-[#00ff87]/15 border border-[#00ff87]/40 text-[#00ff87] text-xs font-mono font-bold flex items-center gap-2">
+                    <Check className="w-4 h-4 text-[#00ff87]" />
+                    <span>DOM Tree Sanitized (0 Coercive Patterns)</span>
+                  </div>
                 )}
               </div>
 
-            </div>
+              {/* Detected Threat Cards */}
+              <div className="space-y-4">
+                <div className="text-xs font-mono text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                  Telemetry Breakdown ({scanResults.threats.length} Vectors)
+                </div>
 
-            {/* Threat Detail Cards */}
-            <div className="space-y-4">
-              <h4 className="text-sm font-mono uppercase text-slate-400 tracking-wider flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-[#00ff87]" />
-                Detected Threat Vectors ({scanResults.threats.length})
-              </h4>
-
-              {scanResults.threats.map((threat) => (
-                <div 
-                  key={threat.id}
-                  className={`p-4 rounded-xl border transition-all ${
-                    neutralized 
-                      ? 'bg-slate-900/40 border-slate-800 opacity-60' 
-                      : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2.5 py-0.5 rounded text-[10px] font-mono font-bold ${
-                        neutralized ? 'bg-slate-800 text-slate-400' : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                      }`}>
-                        {threat.severity}
-                      </span>
-                      <h5 className="text-base font-bold text-white">{threat.type}</h5>
+                {scanResults.threats.map((threat) => (
+                  <div 
+                    key={threat.id}
+                    className={`p-5 rounded-2xl border transition-all duration-300 ${
+                      neutralized 
+                        ? 'bg-[#050b18]/60 border-[#00ff87]/30' 
+                        : 'bg-[#050b18] border-red-500/30'
+                    }`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                      <div className="flex items-center gap-2">
+                        {neutralized ? (
+                          <span className="p-1 rounded-md bg-[#00ff87]/20 text-[#00ff87]">
+                            <Check className="w-3.5 h-3.5" />
+                          </span>
+                        ) : (
+                          <span className="p-1 rounded-md bg-red-500/20 text-red-400">
+                            <AlertTriangle className="w-3.5 h-3.5" />
+                          </span>
+                        )}
+                        <span className="text-sm font-bold text-white font-['Space_Grotesk']">
+                          {threat.type}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+                          AI Confidence: {threat.confidence}
+                        </span>
+                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${neutralized ? 'bg-[#00ff87]/20 text-[#00ff87]' : 'bg-red-500/20 text-red-400'}`}>
+                          {neutralized ? 'MUTATED & SAFE' : threat.severity}
+                        </span>
+                      </div>
                     </div>
 
-                    <span className="text-xs font-mono text-slate-400">
-                      NLP Confidence: <span className="text-[#00ff87]">{threat.confidence}</span>
-                    </span>
-                  </div>
+                    <p className="text-xs text-slate-300 leading-relaxed mb-3">
+                      {threat.explanation}
+                    </p>
 
-                  <p className="text-xs text-slate-300 mt-2">
-                    {threat.explanation}
-                  </p>
-
-                  <div className="mt-3 bg-slate-900 p-2.5 rounded-lg border border-slate-800/80 font-mono text-[11px] text-slate-300 flex items-center justify-between overflow-x-auto">
-                    <code className="text-blue-300">{threat.snippet}</code>
-                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded ml-2 flex-shrink-0 ${
-                      neutralized ? 'bg-[#00ff87]/20 text-[#00ff87]' : 'bg-red-950 text-red-400'
-                    }`}>
-                      {neutralized ? 'DISABLED' : 'ACTIVE DOM'}
-                    </span>
+                    <div className="bg-slate-950 p-2.5 rounded-lg border border-white/5 font-mono text-[11px] text-slate-400 overflow-x-auto">
+                      <code>{threat.snippet}</code>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+
             </div>
+          )}
 
-          </div>
-        )}
+        </div>
 
       </div>
     </section>

@@ -1,118 +1,137 @@
 import React from 'react';
-import { Shield, Play, ExternalLink, GraduationCap, Heart, Lock, CheckCircle2 } from 'lucide-react';
-
-const GithubIcon = (props) => (
-  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-    <path d="M9 18c-4.51 2-5-2-7-2"></path>
-  </svg>
-);
+import { Shield, ArrowUp, Github, Heart, GraduationCap, Download, Play, Layout } from 'lucide-react';
 
 export default function Footer({ onOpenDemoModal, onOpenInstallModal, onOpenFigmaModal }) {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="bg-[#05070d] border-t border-slate-800/80 pt-16 pb-12 text-slate-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <footer className="relative bg-[#02050c] border-t border-white/10 pt-20 pb-12 overflow-hidden text-slate-400 font-sans">
+      
+      {/* Background Radial Glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-radial-glow blur-3xl pointer-events-none opacity-20" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16 border-b border-white/10">
           
-          {/* Brand Info (5 cols) */}
-          <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 border border-[#00ff87]/40 flex items-center justify-center shadow-md">
+          {/* Col 1 & 2: Brand & Mission */}
+          <div className="lg:col-span-2 space-y-5">
+            <a href="#" className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-slate-900 border border-[#00ff87]/40 flex items-center justify-center shadow-lg shadow-[#00ff87]/10">
                 <Shield className="w-5 h-5 text-[#00ff87]" />
               </div>
-              <span className="font-['Space_Grotesk'] text-xl font-bold tracking-tight text-white">
+              <span className="font-['Space_Grotesk'] text-2xl font-black text-white">
                 Dark<span className="text-[#00ff87]">Guard</span>
               </span>
-            </div>
-            
-            <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-              Real-time browser extension that neutralizes deceptive dark patterns using heuristic DOM parsing and HuggingFace NLP models. Shielding human intent across the web.
+            </a>
+
+            <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
+              Real-time proactive browser defense neutralizing dark patterns, hidden charges, and deceptive UI coercions using heuristic DOM analysis & HuggingFace NLP.
             </p>
 
-            <div className="flex items-center gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono text-[#00ff87]">
-                <Lock className="w-3 h-3 text-[#00ff87]" />
-                Manifest V3 Verified
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono text-blue-400">
-                <CheckCircle2 className="w-3 h-3 text-blue-400" />
-                Open Source
-              </span>
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={onOpenInstallModal}
+                className="px-4 py-2 rounded-xl bg-[#00ff87] hover:bg-[#00ffa3] text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-[#00ff87]/20 transition-all active:scale-95"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Add to Browser
+              </button>
+              <button
+                onClick={onOpenDemoModal}
+                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-white/10 text-white text-xs font-semibold flex items-center gap-1.5 transition-all"
+              >
+                <Play className="w-3.5 h-3.5 text-cyan-400" />
+                Watch Demo
+              </button>
             </div>
           </div>
 
-          {/* Navigation Links (3 cols) */}
-          <div className="md:col-span-3 space-y-3">
-            <h4 className="text-xs font-mono uppercase text-slate-200 font-bold tracking-wider">Navigation</h4>
-            <ul className="space-y-2 text-xs">
+          {/* Col 3: Navigation Quick Links */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-mono font-bold uppercase tracking-widest text-white">
+              Navigation
+            </h4>
+            <ul className="space-y-2.5 text-sm">
               <li><a href="#overview" className="hover:text-[#00ff87] transition-colors">Overview</a></li>
-              <li><a href="#threats" className="hover:text-[#00ff87] transition-colors">Threat Matrix</a></li>
-              <li><a href="#live-demo" className="hover:text-[#00ff87] transition-colors">Live Web Scanner</a></li>
-              <li><a href="#sandbox" className="hover:text-[#00ff87] transition-colors">Neutralizer Sandbox</a></li>
-              <li><a href="#architecture" className="hover:text-[#00ff87] transition-colors">Architecture & Tech</a></li>
-              <li><a href="#team" className="hover:text-[#00ff87] transition-colors">Team Resist</a></li>
+              <li><a href="#threats" className="hover:text-[#00ff87] transition-colors">Threat Landscape</a></li>
+              <li><a href="#sandbox" className="hover:text-[#00ff87] transition-colors">3D Sandbox</a></li>
+              <li><a href="#live-demo" className="hover:text-[#00ff87] transition-colors">Threat Radar</a></li>
+              <li><a href="#capabilities" className="hover:text-[#00ff87] transition-colors">Core Engine</a></li>
+              <li><a href="#architecture" className="hover:text-[#00ff87] transition-colors">Architecture</a></li>
             </ul>
           </div>
 
-          {/* Project & Media Links (4 cols) */}
-          <div className="md:col-span-4 space-y-3">
-            <h4 className="text-xs font-mono uppercase text-slate-200 font-bold tracking-wider">Project Assets</h4>
-            <div className="space-y-2 text-xs">
-              
-              <a 
-                href="https://github.com" 
-                target="_blank" 
-                rel="noreferrer"
-                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 hover:text-[#00ff87] transition-all group"
-              >
-                <div className="flex items-center gap-2">
-                  <GithubIcon className="w-4 h-4 text-slate-400 group-hover:text-[#00ff87]" />
-                  <span>GitHub Repository</span>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
-              </a>
+          {/* Col 4: Project Info */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-mono font-bold uppercase tracking-widest text-white">
+              Project
+            </h4>
+            <ul className="space-y-2.5 text-sm">
+              <li><a href="#team" className="hover:text-[#00ff87] transition-colors">Team Resist</a></li>
+              <li>
+                <button 
+                  onClick={onOpenFigmaModal} 
+                  className="hover:text-[#00ff87] transition-colors text-left flex items-center gap-1.5"
+                >
+                  <Layout className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Figma Architecture</span>
+                </button>
+              </li>
+              <li>
+                <span className="text-xs font-mono text-[#00ff87] bg-[#00ff87]/10 px-2 py-0.5 rounded border border-[#00ff87]/30">
+                  Manifest V3 Ready
+                </span>
+              </li>
+              <li>
+                <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
+                  Sub-15ms Latency
+                </span>
+              </li>
+            </ul>
+          </div>
 
-              <button
-                onClick={onOpenFigmaModal}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 hover:text-purple-400 transition-all group"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 font-mono font-bold text-purple-400 flex items-center justify-center text-[10px]">F</span>
-                  <span>Figma Prototype</span>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
-              </button>
-
-              <button
-                onClick={onOpenDemoModal}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 hover:text-blue-400 transition-all group"
-              >
-                <div className="flex items-center gap-2">
-                  <Play className="w-4 h-4 text-blue-400" fill="#60a5fa" />
-                  <span>Interactive Demo Video</span>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />
-              </button>
-
+          {/* Col 5: Institution & Affiliation */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-mono font-bold uppercase tracking-widest text-white">
+              Institution
+            </h4>
+            <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/10 space-y-2">
+              <div className="flex items-center gap-2 text-[#00ff87]">
+                <GraduationCap className="w-4 h-4" />
+                <span className="text-xs font-mono font-bold uppercase">Representing</span>
+              </div>
+              <div className="text-xs font-bold text-white leading-snug">
+                Buddha Institute of Technology
+              </div>
+              <div className="text-[11px] text-slate-400 font-mono">
+                Cybersecurity Hackathon 2026
+              </div>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Attribution Line */}
-        <div className="pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          
+        {/* Footer Bottom Bar */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
           <div className="flex items-center gap-2 text-slate-400">
-            <GraduationCap className="w-4 h-4 text-[#00ff87]" />
-            <span>Developed with passion by <strong>Team Resist</strong> at <strong>Buddha Institute of Technology</strong>.</span>
+            <span>© 2026 DarkGuard AI Sentinel. Built with</span>
+            <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 animate-pulse" />
+            <span>by Team Resist.</span>
           </div>
 
-          <div className="text-slate-500 font-mono">
-            &copy; {new Date().getFullYear()} DarkGuard Security. All rights reserved.
+          <div className="flex items-center gap-4">
+            <button
+              onClick={scrollToTop}
+              className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-white/10 hover:border-[#00ff87]/50 text-slate-300 hover:text-[#00ff87] transition-all flex items-center gap-1.5"
+              aria-label="Scroll back to top"
+            >
+              <ArrowUp className="w-3.5 h-3.5" />
+              <span className="text-[11px]">Back to Top</span>
+            </button>
           </div>
-
         </div>
 
       </div>
